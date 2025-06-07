@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Us - Register Your Account</title>
+    <style>
+        /* A little styling to make it look welcoming */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e0f2f7; /* A soft, calming blue */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 35px 45px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 550px;
+            box-sizing: border-box; /* Ensures padding is included in the width */
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #2c3e50; /* Darker blue for heading */
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: bold;
+            font-size: 0.95em;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="date"],
+        input[type="tel"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #cce7e8; /* Lighter border */
+            border-radius: 6px;
+            font-size: 1em;
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #007bff; /* Blue focus */
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2); /* Soft glow */
+        }
+
+        button {
+            background-color: #28a745; /* A friendly green for action */
+            color: white;
+            padding: 14px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+
+        .error-message {
+            color: #dc3545; /* A clear red for errors */
+            font-size: 0.85em;
+            margin-top: 5px;
+            /* height: 1.2em; Ensures consistent spacing even if no error */
+        }
+
+        .success-message {
+            color: #28a745; /* Green for success */
+            font-size: 1em;
+            text-align: center;
+            margin-top: 25px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Create Your Account</h2>
+        <form id="registrationForm" novalidate>
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" placeholder="e.g., your_awesome_name" required>
+                <div class="error-message" id="usernameError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email" placeholder="e.g., hello@example.com" required>
+                <div class="error-message" id="emailError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Create a Password:</label>
+                <input type="password" id="password" name="password" placeholder="Min 6 characters" required>
+                <div class="error-message" id="passwordError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Your Password:</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required>
+                <div class="error-message" id="confirmPasswordError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="fullName">Full Name:</label>
+                <input type="text" id="fullName" name="fullName" placeholder="e.g., Pankaj Kumar Singh" required>
+                <div class="error-message" id="fullNameError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="dob" required>
+                <div class="error-message" id="dobError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select id="gender" name="gender" required>
+                    <option value="">Select an option</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                    <option value="prefer_not_to_say">Prefer not to say</option>
+                </select>
+                <div class="error-message" id="genderError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Your Address:</label>
+                <textarea id="address" name="address" rows="3" placeholder="Street, City, State, Zip" required></textarea>
+                <div class="error-message" id="addressError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" placeholder="e.g., 1234567890 (10 digits)" required>
+                <div class="error-message" id="phoneError"></div>
+            </div>
+
+            <button type="submit">Submit</button>
+            <div class="success-message" id="successMessage"></div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const registrationForm = document.getElementById('registrationForm');
+
+            // Grabbing all our form elements and their error message spots
+            const usernameInput = document.getElementById('username');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            const fullNameInput = document.getElementById('fullName'); // New
+            const dobInput = document.getElementById('dob');         // New
+            const genderInput = document.getElementById('gender');     // New
+            const addressInput = document.getElementById('address');   // New
+            const phoneInput = document.getElementById('phone');
+
+            const usernameError = document.getElementById('usernameError');
+            const emailError = document.getElementById('emailError');
+            const passwordError = document.getElementById('passwordError');
+            const confirmPasswordError = document.getElementById('confirmPasswordError');
+            const fullNameError = document.getElementById('fullNameError'); // New
+            const dobError = document.getElementById('dobError');         // New
+            const genderError = document.getElementById('genderError');     // New
+            const addressError = document.getElementById('addressError');   // New
+            const phoneError = document.getElementById('phoneError');
+            const successMessage = document.getElementById('successMessage');
+
+            // A handy function to clear any previous error messages
+            const clearErrors = () => {
+                usernameError.textContent = '';
+                emailError.textContent = '';
+                passwordError.textContent = '';
+                confirmPasswordError.textContent = '';
+                fullNameError.textContent = ''; // Clear new errors
+                dobError.textContent = '';      // Clear new errors
+                genderError.textContent = '';   // Clear new errors
+                addressError.textContent = '';  // Clear new errors
+                phoneError.textContent = '';
+                successMessage.textContent = ''; // Clear success/general message too
+                successMessage.style.color = '#28a745'; // Reset color if it was red
+            };
+
+            // Generic validation for any required text/date/tel input
+            const validateRequiredText = (inputElement, errorElement, fieldName) => {
+                if (inputElement.value.trim().length === 0) {
+                    errorElement.textContent = `Please enter your ${fieldName}.`;
+                    return false;
+                }
+                errorElement.textContent = '';
+                return true;
+            };
+
+            // Validation for dropdown (select)
+            const validateRequiredSelect = (selectElement, errorElement, fieldName) => {
+                if (selectElement.value === "") {
+                    errorElement.textContent = `Please select an option for your ${fieldName}.`;
+                    return false;
+                }
+                errorElement.textContent = '';
+                return true;
+            };
+
+
+            // Specific validation functions (unchanged for clarity)
+            const validateUsername = (username) => {
+                if (username.length === 0) {
+                    usernameError.textContent = 'Please choose a username.';
+                    return false;
+                }
+                if (username.length < 3) {
+                    usernameError.textContent = 'Your username needs to be at least 3 characters long.';
+                    return false;
+                }
+                usernameError.textContent = '';
+                return true;
+            };
+
+            const validateEmail = (email) => {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (email.length === 0) {
+                    emailError.textContent = 'We need your email address to register.';
+                    return false;
+                }
+                if (!emailRegex.test(email)) {
+                    emailError.textContent = 'Oops! That doesn\'t look like a valid email address.';
+                    return false;
+                }
+                emailError.textContent = '';
+                return true;
+            };
+
+            const validatePassword = (password) => {
+                if (password.length === 0) {
+                    passwordError.textContent = 'Please create a password.';
+                    return false;
+                }
+                if (password.length < 6) {
+                    passwordError.textContent = 'Your password needs to be at least 6 characters long for security.';
+                    return false;
+                }
+                passwordError.textContent = '';
+                return true;
+            };
+
+            const validateConfirmPassword = (password, confirmPassword) => {
+                if (confirmPassword.length === 0) {
+                    confirmPasswordError.textContent = 'Please confirm your password.';
+                    return false;
+                }
+                if (password !== confirmPassword) {
+                    confirmPasswordError.textContent = 'Passwords don\'t match. Please check them.';
+                    return false;
+                }
+                confirmPasswordError.textContent = '';
+                return true;
+            };
+
+            const validatePhone = (phone) => {
+                const phoneRegex = /^[0-9]{10}$/; // Basic 10-digit check
+                if (phone.length === 0) { // Now required
+                    phoneError.textContent = 'Please provide your phone number.';
+                    return false;
+                }
+                if (!phoneRegex.test(phone)) {
+                    phoneError.textContent = 'Please enter a valid 10-digit phone number (e.g., 1234567890).';
+                    return false;
+                }
+                phoneError.textContent = '';
+                return true;
+            };
+
+
+            // Add instant feedback as the user types/interacts (updated for new fields)
+            usernameInput.addEventListener('input', () => validateUsername(usernameInput.value));
+            emailInput.addEventListener('input', () => validateEmail(emailInput.value));
+            passwordInput.addEventListener('input', () => validatePassword(passwordInput.value));
+            confirmPasswordInput.addEventListener('input', () => validateConfirmPassword(passwordInput.value, confirmPasswordInput.value));
+            fullNameInput.addEventListener('input', () => validateRequiredText(fullNameInput, fullNameError, 'full name'));
+            dobInput.addEventListener('input', () => validateRequiredText(dobInput, dobError, 'date of birth'));
+            genderInput.addEventListener('change', () => validateRequiredSelect(genderInput, genderError, 'gender'));
+            addressInput.addEventListener('input', () => validateRequiredText(addressInput, addressError, 'address'));
+            phoneInput.addEventListener('input', () => validatePhone(phoneInput.value));
+
+
+            registrationForm.addEventListener('submit', (event) => {
+                event.preventDefault(); // Stop the browser from submitting the form normally
+
+                clearErrors(); // Start with a clean slate
+
+                // Gather all the information
+                const username = usernameInput.value.trim();
+                const email = emailInput.value.trim();
+                const password = passwordInput.value;
+                const confirmPassword = confirmPasswordInput.value;
+                const fullName = fullNameInput.value.trim();
+                const dob = dobInput.value;
+                const gender = genderInput.value;
+                const address = addressInput.value.trim();
+                const phone = phoneInput.value.trim();
+
+                let formIsValid = true; // Assume everything's okay until we find an error
+
+                // Run all our checks. The order matters here for `formIsValid`
+                // Each validation function now returns true/false and sets error messages
+                if (!validateUsername(username)) formIsValid = false;
+                if (!validateEmail(email)) formIsValid = false;
+                if (!validatePassword(password)) formIsValid = false;
+                if (!validateConfirmPassword(password, confirmPassword)) formIsValid = false;
+                if (!validateRequiredText(fullNameInput, fullNameError, 'full name')) formIsValid = false;
+                if (!validateRequiredText(dobInput, dobError, 'date of birth')) formIsValid = false;
+                if (!validateRequiredSelect(genderInput, genderError, 'gender')) formIsValid = false;
+                if (!validateRequiredText(addressInput, addressError, 'address')) formIsValid = false;
+                if (!validatePhone(phone)) formIsValid = false;
+
+
+                if (formIsValid) {
+                    // Hooray! All checks passed.
+                    // In a real application, this is where you'd securely send this data to your server.
+                    // For now, we'll just show it in the console and give a friendly message.
+                    console.log('User Data Ready for Server:', {
+                        username,
+                        email,
+                        // Remember: NEVER send plain passwords in a real app! Hash them on the server.
+                        password_placeholder: '[Password is sensitive and would be hashed on server]',
+                        fullName,
+                        dob,
+                        gender,
+                        address,
+                        phone
+                    });
+
+                    successMessage.textContent = 'Awesome! Your account is created. Welcome aboard!';
+                    registrationForm.reset(); // Clear the form for the next user or session
+                } else {
+                    // Uh oh, something's not right. Let the user know.
+                    successMessage.textContent = 'Please fix the highlighted issues above to complete your registration.';
+                    successMessage.style.color = '#dc3545'; // Make the general message red too
+                }
+            });
+        });
+    </script>
+</body>
+</html>
